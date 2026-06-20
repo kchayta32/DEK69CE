@@ -92,7 +92,6 @@ const PRESENTATION_DATA = {
                 "reward-and-event/2026/aucc/aucc.png",
                 "reward-and-event/2026/aucc/aucc2.jpg",
                 "reward-and-event/2026/aucc/aucc3.jpg",
-                "reward-and-event/2026/aucc/aucc4.jpg",
                 "reward-and-event/2026/aucc/aucc5.jpg",
                 "reward-and-event/2026/aucc/aucc6.jpg"
             ],
@@ -311,16 +310,16 @@ function adjustEventImage(imgEl) {
   const count = parseInt(container.getAttribute('data-count') || '1');
   if (count === 1) {
     item.style.height = '340px';
-    item.style.flex = '0 1 auto';
+    item.style.flex = '0 0 auto';
   } else if (count === 2) {
-    item.style.height = '240px';
-    item.style.flex = '1 1 auto';
+    item.style.height = '180px';
+    item.style.flex = '0 0 auto';
   } else if (count === 3) {
-    item.style.height = '160px';
-    item.style.flex = '1 1 auto';
+    item.style.height = '150px';
+    item.style.flex = '0 0 auto';
   } else {
-    item.style.height = '140px';
-    item.style.flex = '1 1 auto';
+    item.style.height = '120px';
+    item.style.flex = '0 0 auto';
   }
 }
 
