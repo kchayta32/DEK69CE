@@ -502,12 +502,15 @@ function buildSlides() {
       `;
     }
 
+    // Duplicate the gallery HTML with a modified ID for the left column (replacing content text)
+    const leftGalleryHTML = galleryHTML.replace(`id="gallery-${ev.name}"`, `id="gallery-${ev.name}-left"`);
+
     slide.querySelector(`#${slideId}-body`).innerHTML = `
       <div class="event-layout">
         <div class="event-details">
           <div class="event-year-tag">${ev.year}</div>
           <h2 class="event-title">${ev.title}</h2>
-          <div class="event-description">${formatDescription(ev.text)}</div>
+          <div class="event-description-images" style="margin-top: 10px;">${leftGalleryHTML}</div>
         </div>
         ${galleryHTML}
       </div>
