@@ -461,21 +461,27 @@ function buildSlides() {
     const slideIndex = 5 + i;
     const slide = createSlideDiv(slideId, ev.category, ev.title);
 
-    // Create gallery HTML (using a clean, responsive grid layout for all slides)
-    let galleryHTML = '';
-    if (ev.images.length > 0) {
+    // Helper to generate a gallery grid HTML
+    function buildGalleryGrid(imageArray, galleryId, fallbackText = "No image") {
+      if (!imageArray || imageArray.length === 0) {
+        return `
+          <div class="event-image-grid" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.05); height: 100%; min-height: 250px; max-height: 380px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <img style="height: 120px; width: auto; opacity: 0.15;" src="logo/cessru_icon.png" alt="${fallbackText}">
+          </div>
+        `;
+      }
+
       let gridImagesHTML = '';
-      ev.images.forEach(img => {
+      imageArray.forEach(img => {
         gridImagesHTML += `
           <div class="event-grid-item" onclick="openLightbox('${img}')">
-            <img src="${img}" alt="${ev.name}">
+            <img src="${img}" alt="Event image">
           </div>
         `;
       });
 
-      // Determine inline grid styling based on the number of images
       let gridStyle = '';
-      const count = ev.images.length;
+      const count = imageArray.length;
       if (count === 1) {
         gridStyle = 'display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; max-height: 380px;';
       } else if (count === 2) {
@@ -488,22 +494,35 @@ function buildSlides() {
         gridStyle = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-height: 380px;';
       }
 
-      galleryHTML = `
-        <div class="event-image-grid" id="gallery-${ev.name}" style="${gridStyle}">
+      return `
+        <div class="event-image-grid" id="${galleryId}" style="${gridStyle}">
           ${gridImagesHTML}
-        </div>
-      `;
-    } else {
-      // Fallback if no images
-      galleryHTML = `
-        <div class="event-image-grid" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); height: 100%; max-height: 380px; border-radius: 12px; border: 1px solid var(--border-color);">
-          <img style="height: 100px; width: auto; opacity: 0.2;" src="logo/cessru_icon.png" alt="No image">
         </div>
       `;
     }
 
-    // Duplicate the gallery HTML with a modified ID for the left column (replacing content text)
-    const leftGalleryHTML = galleryHTML.replace(`id="gallery-${ev.name}"`, `id="gallery-${ev.name}-left"`);
+    // Distribute images between left and right galleries so they don't repeat
+    let leftImages = [];
+    let rightImages = [];
+
+    const totalImages = ev.images.length;
+    if (totalImages === 1) {
+      // 1 image: original position (right) gets the image, left gets fallback logo watermark
+      rightImages = [ev.images[0]];
+    } else if (totalImages === 2) {
+      leftImages = [ev.images[0]];
+      rightImages = [ev.images[1]];
+    } else if (totalImages === 3) {
+      leftImages = [ev.images[0]];
+      rightImages = [ev.images[1], ev.images[2]];
+    } else if (totalImages > 3) {
+      const half = Math.ceil(totalImages / 2);
+      leftImages = ev.images.slice(0, half);
+      rightImages = ev.images.slice(half);
+    }
+
+    const leftGalleryHTML = buildGalleryGrid(leftImages, `gallery-${ev.name}-left`);
+    const rightGalleryHTML = buildGalleryGrid(rightImages, `gallery-${ev.name}-right`);
 
     slide.querySelector(`#${slideId}-body`).innerHTML = `
       <div class="event-layout">
@@ -512,7 +531,7 @@ function buildSlides() {
           <h2 class="event-title">${ev.title}</h2>
           <div class="event-description-images" style="margin-top: 10px;">${leftGalleryHTML}</div>
         </div>
-        ${galleryHTML}
+        ${rightGalleryHTML}
       </div>
     `;
 
