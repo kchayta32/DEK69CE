@@ -89,7 +89,12 @@ const PRESENTATION_DATA = {
             "category": "รับรางวัล",
             "title": "รางวัลนานาชาติ Top 5 Outstanding Paper Award (อันดับที่ 3) - AUCC 2026",
             "images": [
-                "reward-and-event/2026/aucc/aucc.png"
+                "reward-and-event/2026/aucc/aucc.png",
+                "reward-and-event/2026/aucc/aucc2.jpg",
+                "reward-and-event/2026/aucc/aucc3.jpg",
+                "reward-and-event/2026/aucc/aucc4.jpg",
+                "reward-and-event/2026/aucc/aucc5.jpg",
+                "reward-and-event/2026/aucc/aucc6.jpg"
             ],
             "text": "🎉 สาขาวิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม ขอแสดงความยินดีอย่างยิ่งกับนักศึกษาที่คว้ารางวัลการนำเสนอผลงานดีเด่นในเวทีระดับเอเชีย *AUCC 2026*\n\n🏅 รางวัล Top 5 Outstanding Paper Award (อันดับที่ 3)\n* หัวข้องานวิจัย: “การพัฒนาระบบผู้พิทักษ์พืชอัจฉริยะด้วยปัญญาประดิษฐ์เพื่อการดูแลพืชแบบอัตโนมัติ”\n* นักศึกษาผู้สร้างสรรค์: นายศตวรรษ อินทรักษ์ (ปี 3) และ นางสาวกัญญาณัฐ ลุนชาติ (ปี 3)\n* อาจารย์ที่ปรึกษาจากสาขาหุ่นยนต์: ผศ. ดร.ศรษฐกาล โปร่งนุช และ อาจารย์ทักษอร อักษรศิลป์\n\n💡 ผลงานชิ้นนี้ต่อยอดมาจากรายวิชา CPE3401 ระบบสมองกลฝังตัว (Embedded Systems) สะท้อนทักษะการบูรณาการเทคโนโลยี AI และ IoT เข้าด้วยกันเพื่อแก้ปัญหาได้จริง\n\n🎯 การประชุมวิชาการระดับปริญญาตรีด้านคอมพิวเตอร์ภูมิภาคเอเชีย ครั้งที่ 14 (The 14th Asia Undergraduate Conference on Computing) ณ มหาวิทยาลัยราชภัฏรำไพพรรณี จ.จันทบุรี (4-6 กุมภาพันธ์ 2569)"
         },
@@ -272,6 +277,51 @@ function formatCardName(name) {
     return name.replace("อาจารย์", "อาจารย์<br>");
   }
   return name;
+}
+
+// Helper to dynamically adjust slide layout styles based on natural image dimensions
+function adjustEventImage(imgEl) {
+  const item = imgEl.parentElement;
+  const container = item.parentElement;
+  const width = imgEl.naturalWidth;
+  const height = imgEl.naturalHeight;
+  if (!width || !height) return;
+
+  const ratio = width / height;
+
+  // Clear any existing custom class
+  item.classList.remove('portrait-item', 'landscape-item', 'square-item');
+
+  // Determine size classification based on aspect ratio
+  if (ratio < 0.85) {
+    // Vertical image (portrait)
+    item.classList.add('portrait-item');
+    item.style.aspectRatio = '3/4';
+  } else if (ratio > 1.3) {
+    // Horizontal image (landscape)
+    item.classList.add('landscape-item');
+    item.style.aspectRatio = '4/3';
+  } else {
+    // Square or almost square image
+    item.classList.add('square-item');
+    item.style.aspectRatio = '1/1';
+  }
+
+  // Set explicit height/flex behavior based on total images in the container
+  const count = parseInt(container.getAttribute('data-count') || '1');
+  if (count === 1) {
+    item.style.height = '340px';
+    item.style.flex = '0 1 auto';
+  } else if (count === 2) {
+    item.style.height = '240px';
+    item.style.flex = '1 1 auto';
+  } else if (count === 3) {
+    item.style.height = '160px';
+    item.style.flex = '1 1 auto';
+  } else {
+    item.style.height = '140px';
+    item.style.flex = '1 1 auto';
+  }
 }
 
 // Generate Slide Deck Elements Dynamically
@@ -475,27 +525,13 @@ function buildSlides() {
       imageArray.forEach(img => {
         gridImagesHTML += `
           <div class="event-grid-item" onclick="openLightbox('${img}')">
-            <img src="${img}" alt="Event image">
+            <img src="${img}" alt="Event image" onload="adjustEventImage(this)">
           </div>
         `;
       });
 
-      let gridStyle = '';
-      const count = imageArray.length;
-      if (count === 1) {
-        gridStyle = 'display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; max-height: 380px;';
-      } else if (count === 2) {
-        gridStyle = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-height: 380px;';
-      } else if (count === 3) {
-        gridStyle = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-height: 380px;';
-      } else if (count === 4) {
-        gridStyle = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-height: 380px;';
-      } else {
-        gridStyle = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-height: 380px;';
-      }
-
       return `
-        <div class="event-image-grid" id="${galleryId}" style="${gridStyle}">
+        <div class="event-image-grid flex-gallery" id="${galleryId}" data-count="${imageArray.length}">
           ${gridImagesHTML}
         </div>
       `;
