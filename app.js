@@ -506,9 +506,12 @@ function buildSlides() {
     let rightImages = [];
 
     const totalImages = ev.images.length;
+    let eventDetailsStyle = '';
+
     if (totalImages === 1) {
-      // 1 image: original position (right) gets the image, left gets fallback logo watermark
+      // 1 image: original position (right) gets the image, left details are centered with NO watermark
       rightImages = [ev.images[0]];
+      eventDetailsStyle = 'align-items: center; text-align: center;';
     } else if (totalImages === 2) {
       leftImages = [ev.images[0]];
       rightImages = [ev.images[1]];
@@ -521,15 +524,15 @@ function buildSlides() {
       rightImages = ev.images.slice(half);
     }
 
-    const leftGalleryHTML = buildGalleryGrid(leftImages, `gallery-${ev.name}-left`);
+    const leftGalleryHTML = leftImages.length > 0 ? buildGalleryGrid(leftImages, `gallery-${ev.name}-left`) : '';
     const rightGalleryHTML = buildGalleryGrid(rightImages, `gallery-${ev.name}-right`);
 
     slide.querySelector(`#${slideId}-body`).innerHTML = `
       <div class="event-layout">
-        <div class="event-details">
+        <div class="event-details" style="${eventDetailsStyle}">
           <div class="event-year-tag">${ev.year}</div>
           <h2 class="event-title">${ev.title}</h2>
-          <div class="event-description-images" style="margin-top: 10px;">${leftGalleryHTML}</div>
+          ${leftGalleryHTML ? `<div class="event-description-images" style="margin-top: 10px; width: 100%;">${leftGalleryHTML}</div>` : ''}
         </div>
         ${rightGalleryHTML}
       </div>
