@@ -1178,8 +1178,8 @@ header {
   }
 }
 
-/* Chiba University Custom Event Image Grid */
-.chiba-image-grid {
+/* Event Custom Image Grid (applied to all event/award slides) */
+.event-image-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
@@ -1187,7 +1187,7 @@ header {
   max-height: 380px;
 }
 
-.chiba-grid-item {
+.event-grid-item {
   cursor: zoom-in;
   overflow: hidden;
   border-radius: 12px;
@@ -1198,7 +1198,7 @@ header {
   transition: all var(--transition-speed);
 }
 
-.chiba-grid-item img {
+.event-grid-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1206,17 +1206,17 @@ header {
   transition: transform var(--transition-speed);
 }
 
-.chiba-grid-item:hover {
+.event-grid-item:hover {
   transform: translateY(-4px);
   border-color: var(--primary-color);
   box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.25);
 }
 
-.chiba-grid-item:hover img {
+.event-grid-item:hover img {
   transform: scale(1.05);
 }
 
-[data-theme="light"] .chiba-grid-item {
+[data-theme="light"] .event-grid-item {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 

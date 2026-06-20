@@ -422,53 +422,42 @@ function buildSlides() {
     const slideIndex = 5 + i;
     const slide = createSlideDiv(slideId, `รางวัลและกิจกรรมนักศึกษา | ปี ${ev.year}`, ev.title);
 
-    // Create gallery HTML
+    // Create gallery HTML (using a clean, responsive grid layout for all slides)
     let galleryHTML = '';
-    if (ev.name === 'chiba') {
+    if (ev.images.length > 0) {
       let gridImagesHTML = '';
       ev.images.forEach(img => {
         gridImagesHTML += `
-          <div class="chiba-grid-item" onclick="openLightbox('${img}')">
+          <div class="event-grid-item" onclick="openLightbox('${img}')">
             <img src="${img}" alt="${ev.name}">
           </div>
         `;
       });
+
+      // Determine inline grid styling based on the number of images
+      let gridStyle = '';
+      const count = ev.images.length;
+      if (count === 1) {
+        gridStyle = 'display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; max-height: 380px;';
+      } else if (count === 2) {
+        gridStyle = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-height: 380px;';
+      } else if (count === 3) {
+        gridStyle = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-height: 380px;';
+      } else if (count === 4) {
+        gridStyle = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-height: 380px;';
+      } else {
+        gridStyle = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-height: 380px;';
+      }
+
       galleryHTML = `
-        <div class="chiba-image-grid" id="gallery-${ev.name}">
+        <div class="event-image-grid" id="gallery-${ev.name}" style="${gridStyle}">
           ${gridImagesHTML}
-        </div>
-      `;
-    } else if (ev.images.length > 0) {
-      let imagesListHTML = '';
-      ev.images.forEach(img => {
-        imagesListHTML += `
-          <div class="gallery-item" onclick="openLightbox('${img}')">
-            <img class="gallery-img" src="${img}" alt="${ev.name}">
-          </div>
-        `;
-      });
-
-      const showControls = ev.images.length > 1;
-
-      galleryHTML = `
-        <div class="event-gallery" id="gallery-${ev.name}">
-          <div class="gallery-container" id="container-${ev.name}">
-            ${imagesListHTML}
-          </div>
-          ${showControls ? `
-            <button class="gallery-btn gallery-prev" onclick="moveGallery('${ev.name}', -1, event)">❮</button>
-            <button class="gallery-btn gallery-next" onclick="moveGallery('${ev.name}', 1, event)">❯</button>
-            <div class="gallery-dots" id="dots-${ev.name}">
-              ${ev.images.map((_, idx) => `<span class="gallery-dot ${idx === 0 ? 'active' : ''}" onclick="setGalleryIndex('${ev.name}', ${idx}, event)"></span>`).join('')}
-            </div>
-            <div class="gallery-counter"><span id="count-${ev.name}">1</span>/${ev.images.length}</div>
-          ` : ''}
         </div>
       `;
     } else {
       // Fallback if no images
       galleryHTML = `
-        <div class="event-gallery" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1);">
+        <div class="event-image-grid" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); height: 100%; max-height: 380px; border-radius: 12px; border: 1px solid var(--border-color);">
           <img style="height: 100px; width: auto; opacity: 0.2;" src="logo/cessru_icon.png" alt="No image">
         </div>
       `;
