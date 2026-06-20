@@ -215,6 +215,24 @@ function formatDescription(text) {
   return html;
 }
 
+// Helper to split academic title and name to prevent ugly wrapping inside cards
+function formatCardName(name) {
+  if (!name) return '';
+  if (name.startsWith("ผู้ช่วยศาสตราจารย์ ดร.")) {
+    return name.replace("ผู้ช่วยศาสตราจารย์ ดร.", "ผู้ช่วยศาสตราจารย์ ดร.<br>");
+  }
+  if (name.startsWith("อาจารย์ ดร.")) {
+    return name.replace("อาจารย์ ดร.", "อาจารย์ ดร.<br>");
+  }
+  if (name.startsWith("อาจารย์ ")) {
+    return name.replace("อาจารย์ ", "อาจารย์<br>");
+  }
+  if (name.startsWith("อาจารย์")) {
+    return name.replace("อาจารย์", "อาจารย์<br>");
+  }
+  return name;
+}
+
 // Generate Slide Deck Elements Dynamically
 function buildSlides() {
   const container = document.getElementById('slides-container');
@@ -317,7 +335,7 @@ function buildSlides() {
           <img class="card-img" src="${t.image}" alt="${t.name}">
         </div>
         <div class="card-content">
-          <h3 class="card-name">${t.name}</h3>
+          <h3 class="card-name">${formatCardName(t.name)}</h3>
           <p class="card-role">${t.role}</p>
         </div>
       </div>
@@ -344,7 +362,7 @@ function buildSlides() {
           <img class="card-img" src="${t.image}" alt="${t.name}">
         </div>
         <div class="card-content" style="padding: 10px 12px;">
-          <h3 class="card-name" style="font-size: 0.82rem; margin-bottom: 2px; line-height: 1.25;">${t.name}</h3>
+          <h3 class="card-name" style="font-size: 0.82rem; margin-bottom: 2px; line-height: 1.25;">${formatCardName(t.name)}</h3>
           <p class="card-role" style="font-weight: 600; color: var(--primary-color); margin-bottom: 1px; font-size: 0.7rem;">${t.role}</p>
           <p class="card-role" style="font-size: 0.7rem; line-height: 1.25;">${t.dept}</p>
         </div>
