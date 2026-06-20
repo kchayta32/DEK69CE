@@ -559,19 +559,52 @@ function buildSlides() {
       rightImages = ev.images.slice(half);
     }
 
-    const leftGalleryHTML = leftImages.length > 0 ? buildGalleryGrid(leftImages, `gallery-${ev.name}-left`) : '';
-    const rightGalleryHTML = buildGalleryGrid(rightImages, `gallery-${ev.name}-right`);
-
-    slide.querySelector(`#${slideId}-body`).innerHTML = `
-      <div class="event-layout">
-        <div class="event-details" style="${eventDetailsStyle}">
-          <div class="event-year-tag">${ev.year}</div>
-          <h2 class="event-title">${ev.title}</h2>
-          ${leftGalleryHTML ? `<div class="event-description-images" style="margin-top: 10px; width: 100%;">${leftGalleryHTML}</div>` : ''}
+    if (ev.name === 'aucc') {
+      slide.querySelector(`#${slideId}-body`).innerHTML = `
+        <div class="event-layout aucc-custom-layout">
+          <div class="event-details">
+            <div class="event-year-tag">${ev.year}</div>
+            <h2 class="event-title">${ev.title}</h2>
+            <div class="aucc-grid-container">
+              <div class="aucc-left-col">
+                <div class="aucc-top-row">
+                  <div class="aucc-img-box" onclick="openLightbox('reward-and-event/2026/aucc/aucc2.jpg')">
+                    <img src="reward-and-event/2026/aucc/aucc2.jpg" alt="aucc2.jpg">
+                  </div>
+                  <div class="aucc-img-box" onclick="openLightbox('reward-and-event/2026/aucc/aucc5.jpg')">
+                    <img src="reward-and-event/2026/aucc/aucc5.jpg" alt="aucc5.jpg">
+                  </div>
+                </div>
+                <div class="aucc-bottom-row">
+                  <div class="aucc-img-box" onclick="openLightbox('reward-and-event/2026/aucc/aucc6.jpg')">
+                    <img src="reward-and-event/2026/aucc/aucc6.jpg" alt="aucc6.jpg">
+                  </div>
+                </div>
+              </div>
+              <div class="aucc-right-col">
+                <div class="aucc-img-box" onclick="openLightbox('reward-and-event/2026/aucc/aucc3.jpg')">
+                  <img src="reward-and-event/2026/aucc/aucc3.jpg" alt="aucc3.jpg">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        ${rightGalleryHTML}
-      </div>
-    `;
+      `;
+    } else {
+      const leftGalleryHTML = leftImages.length > 0 ? buildGalleryGrid(leftImages, `gallery-${ev.name}-left`) : '';
+      const rightGalleryHTML = buildGalleryGrid(rightImages, `gallery-${ev.name}-right`);
+
+      slide.querySelector(`#${slideId}-body`).innerHTML = `
+        <div class="event-layout">
+          <div class="event-details" style="${eventDetailsStyle}">
+            <div class="event-year-tag">${ev.year}</div>
+            <h2 class="event-title">${ev.title}</h2>
+            ${leftGalleryHTML ? `<div class="event-description-images" style="margin-top: 10px; width: 100%;">${leftGalleryHTML}</div>` : ''}
+          </div>
+          ${rightGalleryHTML}
+        </div>
+      `;
+    }
 
     container.appendChild(slide);
     addSidebarItem(ev.title, slideIndex);

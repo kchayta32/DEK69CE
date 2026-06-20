@@ -1412,3 +1412,121 @@ header {
     color: #1d1d1f !important;
   }
 }
+
+/* AUCC Slide 7 Custom Grid Layout styles */
+.aucc-custom-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100%;
+  height: 100%;
+}
+
+.aucc-custom-layout .event-details {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.aucc-grid-container {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 15px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.aucc-left-col {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 15px;
+  height: 100%;
+  min-height: 0;
+}
+
+.aucc-top-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  min-height: 0;
+}
+
+.aucc-bottom-row {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.aucc-right-col {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.aucc-img-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: #000;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  cursor: zoom-in;
+  transition: all var(--transition-speed);
+}
+
+.aucc-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-speed);
+}
+
+.aucc-img-box:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.25);
+}
+
+.aucc-img-box:hover img {
+  transform: scale(1.05);
+}
+
+[data-theme="light"] .aucc-img-box {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--border-color);
+}
+
+/* Mobile & Tablet Overrides */
+@media (max-width: 900px) {
+  .aucc-grid-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .aucc-left-col {
+    grid-template-rows: auto auto;
+    height: auto;
+    gap: 12px;
+  }
+  .aucc-top-row {
+    gap: 12px;
+  }
+  .aucc-right-col {
+    height: 200px;
+  }
+}
+
+/* Print Overrides */
+@media print {
+  .aucc-img-box {
+    border: 1px solid #e2e2e7 !important;
+    box-shadow: none !important;
+  }
+}
+
