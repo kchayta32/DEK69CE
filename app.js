@@ -145,7 +145,9 @@ const PRESENTATION_DATA = {
         "reward-and-event/2026/chiba/chiba1.jpg",
         "reward-and-event/2026/chiba/chiba2.jpg",
         "reward-and-event/2026/chiba/chiba3.jpg",
-        "reward-and-event/2026/chiba/chiba4.jpg"
+        "reward-and-event/2026/chiba/chiba4.jpg",
+        "reward-and-event/2026/chiba/chiba5.jpg",
+        "reward-and-event/2026/chiba/chiba6.jpg"
       ],
       "text": "🇯🇵 นักศึกษาสาขาวิศวกรรมคอมพิวเตอร์ เข้าร่วมโครงการอบรมเชิงปฏิบัติการแลกเปลี่ยนนักศึกษาและอาจารย์ตามความร่วมมือทางวิชาการระดับนานาชาติ กับ มหาวิทยาลัยชิบะ ประเทศญี่ปุ่น ระหว่างวันที่ 26 กุมภาพันธ์ ถึงวันที่ 15 มีนาคม 2569\n\n📌 ตัวแทนนักศึกษาเข้าร่วมแลกเปลี่ยนปีการศึกษา 2568:\n1. นางสาวมลตณรัตน์ วิวัฒน์เมทากร (นักศึกษาชั้นปีที่ 3)\n2. นายอภิชัย ประมาณ (นักศึกษาชั้นปีที่ 3)\n\n🤝 กิจกรรมเน้นสร้างทักษะระดับสากล ผ่านการแลกเปลี่ยนนวัตกรรมเทคโนโลยี ข้อมูลความรู้ และเสริมสร้างมิตรภาพความร่วมมือระหว่างสองมหาวิทยาลัยให้แน่นแฟ้นยิ่งขึ้น"
     },
@@ -422,7 +424,21 @@ function buildSlides() {
 
     // Create gallery HTML
     let galleryHTML = '';
-    if (ev.images.length > 0) {
+    if (ev.name === 'chiba') {
+      let gridImagesHTML = '';
+      ev.images.forEach(img => {
+        gridImagesHTML += `
+          <div class="chiba-grid-item" onclick="openLightbox('${img}')">
+            <img src="${img}" alt="${ev.name}">
+          </div>
+        `;
+      });
+      galleryHTML = `
+        <div class="chiba-image-grid" id="gallery-${ev.name}">
+          ${gridImagesHTML}
+        </div>
+      `;
+    } else if (ev.images.length > 0) {
       let imagesListHTML = '';
       ev.images.forEach(img => {
         imagesListHTML += `
