@@ -339,14 +339,14 @@ function buildSlides() {
   let currCardsHTML = '';
   curriculumTeachers.forEach(t => {
     currCardsHTML += `
-      <div class="teacher-card">
+      <div class="teacher-card" style="width: 290px; height: 140px;">
         <div class="card-img-wrapper">
           <img class="card-img" src="${t.image}" alt="${t.name}">
         </div>
-        <div class="card-content">
-          <h3 class="card-name" style="font-size: 0.88rem; margin-bottom: 4px; line-height: 1.3;">${t.name}</h3>
-          <p class="card-role" style="font-weight: 600; color: var(--primary-color); margin-bottom: 2px; font-size: 0.72rem;">${t.role}</p>
-          <p class="card-role" style="font-size: 0.72rem; line-height: 1.3;">${t.dept}</p>
+        <div class="card-content" style="padding: 10px 12px;">
+          <h3 class="card-name" style="font-size: 0.82rem; margin-bottom: 2px; line-height: 1.25;">${t.name}</h3>
+          <p class="card-role" style="font-weight: 600; color: var(--primary-color); margin-bottom: 1px; font-size: 0.7rem;">${t.role}</p>
+          <p class="card-role" style="font-size: 0.7rem; line-height: 1.25;">${t.dept}</p>
         </div>
       </div>
     `;
